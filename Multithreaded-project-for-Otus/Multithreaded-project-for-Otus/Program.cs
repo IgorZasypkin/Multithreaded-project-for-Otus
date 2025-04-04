@@ -20,9 +20,7 @@ class Program
         services.AddTransient<IArrayGenerator, AsyncRandomArrayGenerator>();
         services.AddTransient<ISumCalculator, AsyncSequentialSumCalculator>();
         services.AddTransient<ISumCalculator, AsyncThreadSumCalculator>();
-        services.AddTransient<ISumCalculator, AsyncParallelForSumCalculator>();
         services.AddTransient<ISumCalculator, AsyncParallelLinqSumCalculator>();
-        services.AddTransient<ISumCalculator, AsyncChunkedSumCalculator>();
         services.AddSingleton<AsyncTimeMeasurer>();
         services.AddTransient<AsyncSumCalculatorApp>();
 

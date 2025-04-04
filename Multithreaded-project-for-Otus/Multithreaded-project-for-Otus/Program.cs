@@ -5,25 +5,26 @@ using System;
 
 class Program
 {
-    static void Main()
+    static async Task Main(string[] args)
     {
         var serviceProvider = ConfigureServices();
 
-        var app = serviceProvider.GetRequiredService<SumCalculatorApp>();
-        app.Run();
+        var app = serviceProvider.GetRequiredService<AsyncSumCalculatorApp>();
+        await app.RunAsync();
     }
 
     private static ServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
 
-        // Регистрация сервисов
-        services.AddTransient<IArrayGenerator, RandomArrayGenerator>();
-        services.AddTransient<ISumCalculator, SequentialSumCalculator>();
-        services.AddTransient<ISumCalculator, ParallelThreadSumCalculator>();
-        services.AddTransient<ISumCalculator, ParallelLinqSumCalculator>();
-        services.AddSingleton<TimeMeasurer>();
-        services.AddTransient<SumCalculatorApp>();
+        services.AddTransient<IArrayGenerator, AsyncRandomArrayGenerator>();
+        services.AddTransient<ISumCalculator, AsyncSequentialSumCalculator>();
+        services.AddTransient<ISumCalculator, AsyncThreadSumCalculator>();
+        services.AddTransient<ISumCalculator, AsyncParallelForSumCalculator>();
+        services.AddTransient<ISumCalculator, AsyncParallelLinqSumCalculator>();
+        services.AddTransient<ISumCalculator, AsyncChunkedSumCalculator>();
+        services.AddSingleton<AsyncTimeMeasurer>();
+        services.AddTransient<AsyncSumCalculatorApp>();
 
         return services.BuildServiceProvider();
     }

@@ -7,34 +7,36 @@ using System.Threading.Tasks;
 
 namespace Multithreaded_project_for_Otus
 {
-    public class SumCalculatorApp
+    public class AsyncSumCalculatorApp
     {
         private readonly IArrayGenerator _arrayGenerator;
         private readonly IEnumerable<ISumCalculator> _sumCalculators;
-        private readonly TimeMeasurer _timeMeasurer;
+        private readonly AsyncTimeMeasurer _timeMeasurer;
 
-        public SumCalculatorApp(
+        public AsyncSumCalculatorApp(
             IArrayGenerator arrayGenerator,
             IEnumerable<ISumCalculator> sumCalculators,
-            TimeMeasurer timeMeasurer)
+            AsyncTimeMeasurer timeMeasurer)
         {
             _arrayGenerator = arrayGenerator;
             _sumCalculators = sumCalculators;
             _timeMeasurer = timeMeasurer;
         }
 
-        public void Run()
+        public async Task RunAsync()
         {
             int[] sizes = { 100_000, 1_000_000, 10_000_000 };
 
-            foreach (int size in sizes)
+            foreach (var size in sizes)
             {
                 Console.WriteLine($"\nРазмер массива: {size:N0}");
-                int[] array = _arrayGenerator.GenerateRandomArray(size);
+                var array = await _arrayGenerator.GenerateRandomArrayAsync(size);
 
                 foreach (var calculator in _sumCalculators)
                 {
-                    var (result, elapsedMs) = _timeMeasurer.MeasureTime(() => calculator.CalculateSum(array));
+                    var (result, elapsedMs) = await _timeMeasurer.MeasureTimeAsync(
+                        () => calculator.CalculateSumAsync(array));
+
                     Console.WriteLine($"{calculator.MethodName}: {result}");
                     Console.WriteLine($"Время выполнения: {elapsedMs} мс");
                 }

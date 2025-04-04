@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Multithreaded_project_for_Otus
 {
-    public class TimeMeasurer
+    public class AsyncTimeMeasurer
     {
-        public (long result, long elapsedMs) MeasureTime(Func<long> action)
+        public async Task<(long result, long elapsedMs)> MeasureTimeAsync(Func<Task<long>> func)
         {
             var sw = Stopwatch.StartNew();
-            long result = action();
+            var result = await func();
             sw.Stop();
             return (result, sw.ElapsedMilliseconds);
         }

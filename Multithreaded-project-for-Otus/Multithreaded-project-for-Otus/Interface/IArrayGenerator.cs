@@ -8,6 +8,6 @@ namespace Multithreaded_project_for_Otus.Interface
 {
     public interface IArrayGenerator
     {
-        int[] GenerateRandomArray(int size);
+        Task<int[]> GenerateRandomArrayAsync(int size);
     }
 }

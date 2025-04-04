@@ -8,7 +8,7 @@ namespace Multithreaded_project_for_Otus.Interface
 {
     public interface ISumCalculator
     {
-        long CalculateSum(int[] array);
+        Task<long> CalculateSumAsync(int[] array);
         string MethodName { get; }
     }
 }
